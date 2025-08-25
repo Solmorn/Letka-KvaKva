@@ -2,15 +2,17 @@
 #include "math\linear_math\linear_math.h"
 
 void IsLinearTest() {
-    IsLinear_tester test[] ={{ 1, 1},
-                             {10, 1},
-                             {-1, 1},
-                             { 0, 0}};
+    IsLinear_tester test[] ={{ 1, 0},
+                             {10, 0},
+                             {-1, 0},
+                             { 0, 1}};
     for (int i = 0; i < sizeof(test)/sizeof(test[0]); i++) {
         IsLinear_tester recent = test[i];
         bool result = IsLinear(recent.a);
         if (result != recent.expected) {
-            printf("FAILED: test #%d\nexpected -> %d\nanswer -> %d\n\n", i+1, recent.expected, result);
+            printf(RED "FAILED: " RESET "test " YELLOW "#%d\n" RESET
+                       "expected -> " YELLOW "%d\n" RESET
+                       "answer -> " YELLOW "%d\n\n" RESET, i+1, recent.expected, result);
         }
     }
 }

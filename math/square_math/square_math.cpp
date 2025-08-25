@@ -1,9 +1,13 @@
-#include "math\square_math\square_math.h"
+
 
 
 #include <math.h>
 #include <assert.h>
+
+
 #include "system\tools\tools.h"
+#include "math\square_math\square_math.h"
+
 
 double CountDiscriminant(const double a, const double b, const double c) {
     double discriminant = 0;

@@ -11,25 +11,12 @@ void CompareWithZeroTest() {
                                     {(1e-9)+(1e-10),   More}};
     for (int i = 0; i < sizeof(test)/sizeof(test[0]); i++) {
         CompareWithZero_tester recent = test[i];
-        bool result = CompareWithZero(recent.a);
+        Comparison result = CompareWithZero(recent.a);
         if (result != recent.expected) {
-            printf("FAILED: test #%d\nfunction: CompareWithZero\ninput: %.1lf\nexpected -> %d\nanswer -> %d\n\n", i+1, recent.a, recent.expected, result);
-        }
-    }
-}
-
-void RootsOfSquareTest() {
-    RootsOfSquare_tester test[] = {{{ 0,  0,  0,  -1,  -1, ZeroSolutions},   -1,   -1},
-                                   {{ 0,  1,  0, NAN, NAN, ZeroSolutions},    0,    0},
-                                   {{ 1,  3,  2, NAN, NAN, ZeroSolutions},   -2,   -3},
-                                   {{ 1,  2,  1, NAN, NAN, ZeroSolutions},   -1,   -1},
-                                   {{71,  3, 77,  -1,  -1, ZeroSolutions},   -1,   -1}};
-    int test_amount = sizeof(test)/sizeof(test[0]);
-    for (int i = 0; i < test_amount; i++) {
-        RootsOfSquare(&test[i].eq, CountDiscriminant(test[i].eq.a, test[i].eq.b, test[i].eq.c));
-        if (test[i].eq.x1 != test[i].x1_expected || test[i].eq.x2 != test[i].x2_expected) {
-            printf("FAILED: test #%d\nexpected -> x1 = %lf, x2 = %lf\nanswer -> x1 = %lf, x2 = %lf\n\n",
-                   i+1, test[i].x1_expected, test[i].x2_expected, test[i].eq.x1, test[i].eq.x2);
+            printf(RED "FAILED: " RESET "test " YELLOW "#%d\n" RESET
+                       "function: " BLUE "CompareWithZero\n" RESET
+                       "expected -> " YELLOW "%d\n" RESET
+                       "answer -> " YELLOW "%d\n\n" RESET, i+1, recent.expected, result);
         }
     }
 }

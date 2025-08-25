@@ -1,42 +1,68 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 #include "system\tools\tools.h"
 
 
 void Greeting(double* a, double* b, double* c) {
-    printf("PLease, enter coefficients a, b, c of square EquationParams ax^2 + bx + c: \n");
+    PrintColor("PLease, enter coefficients a, b, c of square equation ax^2 + bx + c: \n", Yellow);
     while (true) {
         int check_scanf = 0;
         bool check_buffer = 0;
         check_scanf = scanf("%lf %lf %lf", a, b, c);
         check_buffer = CheckBuffer();
         if (check_scanf == 3 && check_buffer)  {
-            printf("got it!\n");
+            PrintColor("got it!\n", Green);
             break;
         } else {
             PrintError(TypingError);
-            printf("try again!\n");
+            PrintColor("try again!\n", Blue);
         }
         ClearBuffer();
     }
     ClearBuffer();
 }
 
-bool AskUser() {
-    Answer answer = No;
-    printf("wanna continue? y/n\n");
+void FileGreeting(double* a, double* b, double* c, char* filename) {
+    PrintColor("enter filename\n", Yellow);
     while (true) {
-        scanf("%c", &answer);
-        if (answer == Yes || answer == No) {
+        scanf("%s", filename);
+        if (CheckBuffer()) {
+            FILE *file = fopen(filename, "r");
+            if (file == nullptr) {
+                PrintError(FileNameError);
+                PrintColor("try again!\n", Blue);
+            } else {
+                if (fscanf(file, "%lf %lf %lf", a, b, c) != 3) {
+                    PrintError(FileDataError);
+                    PrintColor("try again!\n", Blue);
+                } else {
+                    fclose(file);
+                    break;
+                }
+            }
+            fclose(file);
+        } else {
+            PrintError(TypingError);
+        }
+    }
+}
+
+bool AskUser() {
+    char answer[4];
+    PrintColor("wanna continue? yes/no\n", Yellow);
+    while (true) {
+        scanf("%3s", &answer);
+        if ((strcmp(answer, "yes") == 0 || strcmp(answer, "no") == 0) && CheckBuffer()) {
             break;
         } else {
-            printf("try again!\n");
+            PrintColor("try again!\n", Blue);
         }
         ClearBuffer();
     }
     ClearBuffer();
 
-    if (answer == Yes) {
+    if (strcmp(answer, "yes") == 0) {
         return 1;
     }
 
@@ -48,16 +74,16 @@ Errors ShowAnswer(EquationParams* eq_adr) {
     Errors err = Ok;
     switch (eq_adr->sol) {
         case ZeroSolutions:
-            printf("the Equation has no solutions\n");
+            printf(GREEN "the Equation has no solutions\n" RESET);
             break;
         case OneSolution:
-            printf("the Equation has one solution: %lf\n", eq_adr->x1);
+            printf(GREEN "the Equation has one solution: " RESET "%lf\n", eq_adr->x1);
             break;
         case TwoSolutions:
-            printf("the Equation has two solution: %lf, %lf\n", eq_adr->x1, eq_adr->x2);
+            printf(GREEN "the Equation has two solution: " RESET "%lf, %lf\n", eq_adr->x1, eq_adr->x2);
             break;
         case InfiniteSolutions:
-            printf("the Equation has infinite solutions\n");
+            printf(GREEN "the Equation has infinite solutions\n" RESET);
             break;
         default:
             err = UnexpectedError;
