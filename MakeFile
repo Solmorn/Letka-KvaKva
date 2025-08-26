@@ -1,0 +1,43 @@
+CC = g++
+CFLAGS = -I . -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal \
+		 -Winline -Wunreachable-code -Wmissing-declarations -Wmissing-include-dirs \
+		 -Wswitch-enum -Wswitch-default -Weffc++ -Wmain -Wextra -Wall -g -pipe     \
+	   	 -fexceptions -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body    \
+		 -Wformat-security -Wformat=2 -Wignored-qualifiers -Wlogical-op            \
+		 -Wno-missing-field-initializers -Wnon-virtual-dtor -Woverloaded-virtual   \
+		 -Wpointer-arith -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing         \
+		 -Wstrict-null-sentinel -Wtype-limits -Wwrite-strings -Werror=vla -D_DEBUG \
+		 -D_EJUDGE_CLIENT_SIDE                                                     \
+                                                                                   \
+
+SOURCES =   main\main.cpp                               \
+			math\general_math\general_math_test.cpp     \
+			math\general_math\general_math.cpp          \
+			math\linear_math\linear_math_test.cpp       \
+			math\linear_math\linear_math.cpp	        \
+			math\square_math\square_math_test.cpp       \
+			math\square_math\square_math.cpp            \
+			mode\mode.cpp                               \
+			system\talking\talking.cpp	                \
+			system\tools\tools.cpp                      \
+
+INCLUDES =  math\general_math\general_math.h            \
+			math\linear_math\linear_math.h              \
+			math\square_math\square_math.h              \
+			mode\mode.h                                 \
+			system\talking\talking.h                    \
+			system\tools\tools.h                        \
+
+
+OBJECTS = $(SOURCES:.cpp=.o)
+EXECUTABLE = poltorashka
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC)  $(LDFLAGS) $(OBJECTS) -o $@
+
+
+
+%.o: %.cpp $(INCLUDES)
+	$(CC) $(CFLAGS) -c $< -o $@

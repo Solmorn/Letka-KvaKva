@@ -6,7 +6,7 @@
 
 void ClearBuffer() {
     while(true) {
-        char p = 0;
+        int p = 0;
         p = getchar();
         if (p == '\n' || p == EOF) {
             break;
@@ -16,7 +16,7 @@ void ClearBuffer() {
 
 bool CheckBuffer() {
     while(true) {
-        char p = getchar();
+        int p = getchar();
         switch (p) {
             case ' ':
                 break;
@@ -43,6 +43,9 @@ void PrintError(Errors err) {
             break;
         case FileDataError:
             PrintColor("Wrong file data\n", Red);
+            break;
+        case Ok:
+            PrintColor("Ok\n", Green);
             break;
         default:
             PrintColor("Ok\n", Green);

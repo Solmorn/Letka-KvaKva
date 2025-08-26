@@ -78,6 +78,7 @@ Errors HowManySolutions(EquationParams* eq_adr, const bool is_linear, const doub
                 break;
             default:
                 err = UnexpectedError;
+                return err;
         }
     }
     return Ok;
