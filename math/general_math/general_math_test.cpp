@@ -9,7 +9,8 @@ void CompareWithZeroTest() {
                                     {         0, Equals},
                                     {(1e-9)-(1e-10), Equals},
                                     {(1e-9)+(1e-10),   More}};
-    for (int i = 0; i < sizeof(test)/sizeof(test[0]); i++) {
+    unsigned int test_amount = sizeof(test)/sizeof(test[0]);
+    for (unsigned int i = 0; i < test_amount; i++) {
         CompareWithZero_tester recent = test[i];
         Comparison result = CompareWithZero(recent.a);
         if (result != recent.expected) {
@@ -27,8 +28,8 @@ void HowManySolutionsTest() {
                                       {{ 1,  3,  2, NAN, NAN, ZeroSolutions},   TwoSolutions},
                                       {{ 1,  2,  1, NAN, NAN, ZeroSolutions},   OneSolution},
                                       {{71,  3, 77, NAN, NAN,  OneSolution},  ZeroSolutions}};
-    int test_amount = sizeof(test)/sizeof(test[0]);
-    for (int i = 0; i < test_amount; i++) {
+    unsigned int test_amount = sizeof(test)/sizeof(test[0]);
+    for (unsigned int i = 0; i < test_amount; i++) {
         HowManySolutions(&test[i].eq, IsLinear(test[i].eq.a), CountDiscriminant(test[i].eq.a, test[i].eq.b, test[i].eq.c));
         if (test[i].eq.sol != test[i].sol_expected) {
             printf("FAILED: test #%d\nexpected -> %d\nanswer -> %d\n\n",

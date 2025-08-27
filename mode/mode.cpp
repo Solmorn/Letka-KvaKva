@@ -12,16 +12,47 @@
 
 
 
-void WhichMode(Mode* mode_adr, const int argc, const char* const argv[]) {
-    int flags_size = sizeof(Flags)/sizeof(Flags[0]);
+Errors CheckMode(Mode* mode_adr, const int argc, const char* const argv[]) {
+    if (argc < 2) {
+        *mode_adr = NormalMode;
+        return Ok;
+    }
+    int all_flags_size = sizeof(Flags)/sizeof(Flags[0]);
     for (int i = 1; i < argc; i++) {
-        for (int j = 0; j < flags_size; j++) {
-            if (strncmp(argv[i], Flags[j].flag_name_long, MAX_LEN) == 0 ||
-               strncmp(argv[i], Flags[j].flag_name_short, MAX_LEN) == 0) {
-                *mode_adr = Flags[j].flag_mode;
-                return;
+        const char* current_flag = argv[i];
+        int one_flag_size = sizeof(current_flag)/sizeof(current_flag[0]);
+        if (one_flag_size > 1 && current_flag[0] == '-') {
+            if (current_flag[1] == '-') {
+                for (int j = 0; j < all_flags_size; j++) {
+                    if (strncmp(current_flag, Flags[j].flag_name_long, MAX_LEN) == 0) {
+                        if (*mode_adr == UndefinedMode) {
+                            *mode_adr = Flags[j].flag_mode;
+                        } else {
+                            return TooManyFlagsError;
+                        }
+
+                    }
+                }
+            } else {
+                for (int j = 0; j < all_flags_size; j++) {
+                    if (strncmp(current_flag, Flags[j].flag_name_short, MAX_LEN) == 0) {
+                        if (*mode_adr == UndefinedMode) {
+                            *mode_adr = Flags[j].flag_mode;
+                        } else {
+                            return TooManyFlagsError;
+                        }
+                    }
+                }
             }
+        } else {
+            *mode_adr = UndefinedMode;
+            return FlagError;
         }
+    }
+    if (*mode_adr == UndefinedMode) {
+        return FlagError;
+    } else {
+        return Ok;
     }
 }
 
@@ -38,7 +69,7 @@ void StartTestMode() {
 
 void StartHelpMode() {
     printf("    /\\___/\\\n"
-           "   /  o o  \\\n"
+           "   /  " YELLOW "o o" RESET "  \\\n"
            "  ( == ^ == )\n"
            "   )       (\n"
            "  (         )\n"
@@ -65,7 +96,7 @@ void StartNormalMode() {
         if (err != Ok) {
             PrintError(err);
         } else {
-            err = ShowAnswer(&eq);
+            Errors err = ShowAnswer(&eq);
             if (err != Ok) {
                 PrintError(err);
             }
@@ -94,7 +125,7 @@ void StartFileMode() {
     }
 }
 
-void StartMode(Mode mode) {
+void Run(Mode mode) {
     switch (mode) {
         case TestMode:
             StartTestMode();
@@ -105,7 +136,14 @@ void StartMode(Mode mode) {
         case FileMode:
             StartFileMode();
             break;
-        default:
+        case NormalMode:
             StartNormalMode();
+            break;
+        case UndefinedMode:
+            PrintError(UnexpectedError);
+            break;
+        default:
+            PrintError(UnexpectedError);
+            break;
     }
 }

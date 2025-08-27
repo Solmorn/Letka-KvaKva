@@ -10,10 +10,10 @@
 
 #define RESET "\033[0m"
 #define BLACK "\033[30m"
-#define RED "\03[31m"
+#define RED "\033[31m"
 #define GREEN "\033[32m"
 #define YELLOW "\033[33m"
-#define BLUE "\03[34m"
+#define BLUE "\033[34m"
 
 #define MAX_LEN 100
 
@@ -56,6 +56,8 @@ enum Errors {
     UnexpectedError,     ///< Unexpected error occurred
     FileNameError,       ///< File name error occurred
     FileDataError,       ///< File name error occurred
+    FlagError,
+    TooManyFlagsError,           ///< File name error occurred
     Ok                   ///< No errors
 };
 
@@ -65,7 +67,7 @@ enum Errors {
  */
 enum Comparison {
     Less = -1, ///< Less than
-    Equals = 0,///< Equals
+    Equals = 0, ///< Equals
     More = 1   ///< More than
 };
 
@@ -99,6 +101,9 @@ struct EquationParams {
 };
 
 
+void PrintMeow();
+
+void PrintGitMeow();
 
 
 

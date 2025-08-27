@@ -22,9 +22,8 @@ void Greeting(double* a, double* b, double* c) {
     }
 }
 
-void ShowAnswerFile(EquationParams* eq_adr, FILE* input_file, FILE* output_file) {
+void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file) {
     assert(eq_adr != nullptr);
-    Errors err = Ok;
     switch (eq_adr->sol) {
         case ZeroSolutions:
             fprintf(output_file, "the Equation has no solutions\n");
@@ -49,7 +48,7 @@ void FileProcessing(EquationParams* eq_adr, FILE* input_file, FILE* output_file)
         switch (fscanf(input_file, "%lf %lf %lf\n", &(eq_adr->a), &(eq_adr->b), &(eq_adr->c))) {
             case 3:
                 Solver(eq_adr);
-                ShowAnswerFile(eq_adr, input_file, output_file);
+                ShowAnswerFile(eq_adr, output_file);
                 break;
             case EOF:
                 check = false;
@@ -76,7 +75,7 @@ void FileGreeting(EquationParams* eq_adr, char* input_filename, char* output_fil
                 while (true) {
                     scanf("%s", output_filename);
                     if (CheckBuffer()) {
-                        FILE *output_file = fopen(output_filename, "w");
+                        FILE *output_file = fopen(output_filename, "r+");
                         if (output_file == nullptr) {
                             PrintError(FileNameError);
                             PrintColor("try again!\n", Blue);

@@ -36,7 +36,7 @@ void FileGreeting(EquationParams* eq_adr, char* input_filename, char* output_fil
 
 void FileProcessing(EquationParams* eq_adr, char* input_filename, char* output_filename);
 
-void ShowAnswerFile(EquationParams* eq_adr, FILE* input_file, FILE* output_file);
+void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file);
 
 /**
  * @brief Shows answer to user.

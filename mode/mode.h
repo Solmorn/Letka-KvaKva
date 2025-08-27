@@ -4,8 +4,11 @@
 
 #include <stdio.h>
 
+#include "system\tools\tools.h"
+
 
 enum Mode {
+    UndefinedMode,
     TestMode,
     FileMode,
     HelpMode,
@@ -17,7 +20,7 @@ struct FlagParams {
     const char* flag_name_long;
     const char* flag_name_short;
     const char* flag_description;
-    Mode flag_mode = NormalMode;
+    Mode flag_mode = UndefinedMode;
 
 };
 
@@ -27,12 +30,12 @@ static const FlagParams Flags[] = {{"--test", "-t", "Help you to test the progra
                                    {"--file", "-f", "Change mode from normal to file input", FileMode},
                                    {"--help", "-h", "Describe flags and show you the cat", HelpMode}};
 
-void StartMode(Mode mode);
+void Run(Mode mode);
 void StartTestMode();
 void StartHelpMode();
 void StartNormalMode();
 void StartFileMode();
-void WhichMode(Mode* mode_adr, const int argc, const char* const argv[]);
+Errors CheckMode(Mode* mode_adr, const int argc, const char* const argv[]);
 
 
 

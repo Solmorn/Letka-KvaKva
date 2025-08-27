@@ -3,6 +3,17 @@
 #include "system\tools\tools.h"
 
 
+void PrintMeow() {
+    PrintColor("meow!\n", Blue);
+
+}
+
+void PrintGitMeow() {
+    printf(BLUE "meowmeowmeowmeow" BLACK "WWW" GREEN "GIT" BLACK "WWW" GREEN "COMMIT" BLACK "WWW" RED "MEOOOOOOOOOOOOOOW" BLACK "WWW" BLUE "meowmeowmeowmeow\n" RESET
+           BLUE "meowmeowmeowmeow" BLACK "WWW" GREEN "GIT" BLACK "WWW" GREEN "PUSH" BLACK "WWW" RED "MEOOOOOOOOOOOOOOOOW" BLACK "WWW" BLUE "meowmeowmeowmeow\n" RESET
+           BLUE "meowmeowmeowmeow" BLACK "WWW" GREEN "LEAVE" BLACK "WWW" GREEN "BUILDING" BLACK "WWW" RED "MEOOOOOOOOOOW" BLACK "WWW" BLUE "meowmeowmeowmeow\n" RESET);
+}
+
 
 
 void ClearBuffer() {
@@ -41,6 +52,12 @@ void PrintError(Errors err) {
             break;
         case FileDataError:
             PrintColor("Wrong file data\n", Red);
+            break;
+        case FlagError:
+            PrintColor("Wrong flag\n", Red);
+            break;
+        case TooManyFlagsError:
+            PrintColor("Too many flags\n", Red);
             break;
         case Ok:
             PrintColor("Ok\n", Green);

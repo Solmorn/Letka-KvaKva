@@ -87,13 +87,14 @@ Errors HowManySolutions(EquationParams* eq_adr, const bool is_linear, const doub
 Errors Solver(EquationParams* eq_adr) {
     bool is_linear = 0;
     double d = NAN;
+    Errors err = Ok;
     d = CountDiscriminant(eq_adr->a, eq_adr->b, eq_adr->c);
     is_linear = IsLinear(eq_adr->a);
-    Errors err = HowManySolutions(eq_adr, is_linear, d);
+    err = HowManySolutions(eq_adr, is_linear, d);
     if (err != Ok) {
         return err;
     } else {
-        Errors err = CalculateAnswer(eq_adr, is_linear, d);
+        err = CalculateAnswer(eq_adr, is_linear, d);
         return err;
     }
 }
