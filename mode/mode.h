@@ -30,7 +30,8 @@ static const FlagParams Flags[] = {{"--test", "-t", "Help you to test the progra
 void StartMode(Mode mode);
 void StartTestMode();
 void StartHelpMode();
-void StartInteractiveMode(Mode mode);
+void StartNormalMode();
+void StartFileMode();
 void WhichMode(Mode* mode_adr, const int argc, const char* const argv[]);
 
 

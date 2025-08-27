@@ -7,6 +7,7 @@
 #include "math\square_math\square_math.h"
 #include "math\linear_math\linear_math.h"
 #include "system\talking\talking.h"
+#include "system\tools\tools.h"
 
 
 
@@ -14,17 +15,12 @@
 void WhichMode(Mode* mode_adr, const int argc, const char* const argv[]) {
     int flags_size = sizeof(Flags)/sizeof(Flags[0]);
     for (int i = 1; i < argc; i++) {
-        int j = 0;
         for (int j = 0; j < flags_size; j++) {
             if (strncmp(argv[i], Flags[j].flag_name_long, MAX_LEN) == 0 ||
                strncmp(argv[i], Flags[j].flag_name_short, MAX_LEN) == 0) {
-
                 *mode_adr = Flags[j].flag_mode;
                 return;
-
             }
-
-
         }
     }
 }
@@ -60,17 +56,36 @@ void StartHelpMode() {
 
 }
 
-void StartInteractiveMode(Mode mode) {
-    char filename[MAX_LEN] = "";
+void StartNormalMode() {
     EquationParams eq;
-    Errors err;
+    Errors err = Ok;
     while (true) {
-        if (mode == NormalMode) {
-            Greeting(&eq.a, &eq.b, &eq.c);
+        Greeting(&eq.a, &eq.b, &eq.c);
+        err = Solver(&eq);
+        if (err != Ok) {
+            PrintError(err);
         } else {
-            FileGreeting(&eq.a, &eq.b, &eq.c, filename);
+            err = ShowAnswer(&eq);
+            if (err != Ok) {
+                PrintError(err);
+            }
         }
-        Solver(&eq);
+        if (AskUser()) {
+            continue;
+        } else {
+            break;
+        }
+    }
+}
+
+
+
+void StartFileMode() {
+    char input_file[MAX_LEN] = "";
+    char output_file[MAX_LEN] = "";
+    EquationParams eq;
+    while (true) {
+        FileGreeting(&eq, input_file, output_file);
         if (AskUser()) {
             continue;
         } else {
@@ -87,7 +102,10 @@ void StartMode(Mode mode) {
         case HelpMode:
             StartHelpMode();
             break;
+        case FileMode:
+            StartFileMode();
+            break;
         default:
-            StartInteractiveMode(mode);
+            StartNormalMode();
     }
 }

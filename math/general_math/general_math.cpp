@@ -84,24 +84,17 @@ Errors HowManySolutions(EquationParams* eq_adr, const bool is_linear, const doub
     return Ok;
 }
 
-void Solver(EquationParams* eq_adr) {
+Errors Solver(EquationParams* eq_adr) {
     bool is_linear = 0;
     double d = NAN;
     d = CountDiscriminant(eq_adr->a, eq_adr->b, eq_adr->c);
     is_linear = IsLinear(eq_adr->a);
     Errors err = HowManySolutions(eq_adr, is_linear, d);
     if (err != Ok) {
-        PrintError(err);
+        return err;
     } else {
         Errors err = CalculateAnswer(eq_adr, is_linear, d);
-        if (err != Ok) {
-            PrintError(err);
-        } else {
-            Errors err = ShowAnswer(eq_adr);
-            if (err != Ok) {
-                PrintError(err);
-            }
-        }
+        return err;
     }
 }
 

@@ -87,7 +87,7 @@ Errors CalculateAnswer(EquationParams* eq_adr, const bool is_linear, const doubl
  *       CalculateAnswer(EquationParams* eq_adr, const bool is_linear, const double d),
  *       ShowAnswer(EquationParams* eq_adr)
  */
-void Solver(EquationParams* eq_adr);
+Errors Solver(EquationParams* eq_adr);
 
 /**
  * @brief Solves the square equation. Sets roots in the structure EquationParams.

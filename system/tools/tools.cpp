@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "system\tools\tools.h"
 
 
@@ -14,20 +15,17 @@ void ClearBuffer() {
     }
 }
 
+
 bool CheckBuffer() {
-    while(true) {
-        int p = getchar();
-        switch (p) {
-            case ' ':
-                break;
-            case '\n':
-                return true;
-            case EOF:
-                return true;
-            default:
-                return false;
+    bool isvalid = true;
+    int p = getchar();
+    while (p != EOF && p != '\n') {
+        p = getchar();
+        if (!isspace(p)) {
+            isvalid = false;
         }
     }
+    return isvalid;
 }
 
 void PrintError(Errors err) {
