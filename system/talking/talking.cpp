@@ -16,7 +16,6 @@ Errors Greeting(double* a, double* b, double* c) {
         char get_q = 0;
         get_q = getc(stdin);
         if (get_q == 'q') {
-            ungetc(get_q, stdin);
             check_buffer = CheckBuffer(stdin);
             if (check_buffer) {
                 return CriticalError;
@@ -63,7 +62,6 @@ void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file) {
 }
 
 static Errors CheckQuit(char get_q) {
-    ungetc(get_q, stdin);
     bool check_buffer = CheckBuffer(stdin);
     if (check_buffer) {
         return CriticalError;
@@ -98,9 +96,9 @@ static Errors WorkWithOutput(EquationParams* eq_adr, FILE* input_file, char* out
                     PrintError(FileNameError);
                     PrintColor("try again!\nor enter " YELLOW "q" BLUE " to quit\n", Blue);
                 } else {
+                    err = FileProcessing(eq_adr, input_file, output_file);
                     break;
                 }
-                err = FileProcessing(eq_adr, input_file, output_file);
                 fclose(output_file);
             } else {
                 PrintError(TypingError);

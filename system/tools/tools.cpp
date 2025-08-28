@@ -29,10 +29,11 @@ bool CheckBuffer(FILE* input) {
     bool isvalid = true;
     int p = getc(input);
     while (p != EOF && p != '\n') {
-        p = getc(input);
+
         if (!isspace(p)) {
             isvalid = false;
         }
+        p = getc(input);
     }
     return isvalid;
 }

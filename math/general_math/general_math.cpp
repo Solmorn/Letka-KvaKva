@@ -12,19 +12,28 @@ Errors FileProcessing(EquationParams* eq_adr, FILE* input_file, FILE* output_fil
     assert(eq_adr != nullptr);
     assert(input_file != nullptr);
 
-    Errors err = Ok;
     bool check = true;
+    int check_scanf = 0;
+    bool check_buffer = 0;
     while (check) {
-        switch (fscanf(input_file, "%lf %lf %lf\n", &(eq_adr->a), &(eq_adr->b), &(eq_adr->c))) {
+        check_scanf = fscanf(input_file, "%lf %lf %lf", &(eq_adr->a), &(eq_adr->b), &(eq_adr->c));
+        check_buffer = CheckBuffer(input_file);
+        switch (check_scanf) {
             case 3:
-                Solver(eq_adr);
-                ShowAnswerFile(eq_adr, output_file);
+                if (check_buffer) {
+                    Solver(eq_adr);
+                    ShowAnswerFile(eq_adr, output_file);
+                } else {
+                    fprintf(output_file, "syka!(angry meow)\n");
+                }
                 break;
             case EOF:
-                check = false;
+                if (check_buffer) {
+                    check = false;
+                }
                 break;
             default:
-                fprintf(output_file, "syka\n");
+                fprintf(output_file, "syka!(angry meow)\n");
         }
     }
     fclose(output_file);

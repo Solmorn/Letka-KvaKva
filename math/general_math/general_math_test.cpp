@@ -9,7 +9,7 @@ void CompareWithZeroTest() {
                                     {.a =              0, .expected = Equals},
                                     {.a = (1e-9)-(1e-10), .expected = Equals},
                                     {.a = (1e-9)+(1e-10), .expected =   More}};
-.a =
+
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
         CompareWithZero_tester recent = test[i];
@@ -24,12 +24,12 @@ void CompareWithZeroTest() {
 }
 
 void HowManySolutionsTest() {
-    HowManySolutions_tester test[] = {{.eq = {.a =  0, .b =  0, .c =  0, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =   InfiniteSolutions},
-                                      {.eq = {.a =  0, .b =  1, .c =  0, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =         OneSolution},
-                                      {.eq = {.a =  1, .b =  3, .c =  2, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =        TwoSolutions},
-                                      {.eq = {.a =  1, .b =  2, .c =  1, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =         OneSolution},
-                                      {.eq = {.a = 71, .b =  3, .c = 77, .x1 = NAN, .x2 = NAN, .sol =   OneSolution}, .expected =       ZeroSolutions}};
-.a = .b =
+    HowManySolutions_tester test[] = {{.eq = {.a =  0, .b =  0, .c =  0, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .sol_expected =   InfiniteSolutions},
+                                      {.eq = {.a =  0, .b =  1, .c =  0, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .sol_expected =         OneSolution},
+                                      {.eq = {.a =  1, .b =  3, .c =  2, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .sol_expected =        TwoSolutions},
+                                      {.eq = {.a =  1, .b =  2, .c =  1, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .sol_expected =         OneSolution},
+                                      {.eq = {.a = 71, .b =  3, .c = 77, .x1 = NAN, .x2 = NAN, .sol =   OneSolution}, .sol_expected =       ZeroSolutions}};
+
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
         HowManySolutions(&test[i].eq, IsLinear(test[i].eq.a), CountDiscriminant(test[i].eq.a, test[i].eq.b, test[i].eq.c));
