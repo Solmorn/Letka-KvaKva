@@ -4,13 +4,14 @@
 #include "math\linear_math\linear_math.h"
 
 void CompareWithZeroTest() {
-    CompareWithZero_tester test[] ={{         1,   More},
-                                    {        -1,   Less},
-                                    {         0, Equals},
+    CompareWithZero_tester test[] ={{             1,   More},
+                                    {            -1,   Less},
+                                    {             0, Equals},
                                     {(1e-9)-(1e-10), Equals},
                                     {(1e-9)+(1e-10),   More}};
-    unsigned int test_amount = sizeof(test)/sizeof(test[0]);
-    for (unsigned int i = 0; i < test_amount; i++) {
+
+    size_t test_amount = sizeof(test)/sizeof(test[0]);
+    for (size_t i = 0; i < test_amount; i++) {
         CompareWithZero_tester recent = test[i];
         Comparison result = CompareWithZero(recent.a);
         if (result != recent.expected) {
@@ -24,12 +25,13 @@ void CompareWithZeroTest() {
 
 void HowManySolutionsTest() {
     HowManySolutions_tester test[] = {{{ 0,  0,  0, NAN, NAN, ZeroSolutions},   InfiniteSolutions},
-                                      {{ 0,  1,  0, NAN, NAN, ZeroSolutions},   OneSolution},
-                                      {{ 1,  3,  2, NAN, NAN, ZeroSolutions},   TwoSolutions},
-                                      {{ 1,  2,  1, NAN, NAN, ZeroSolutions},   OneSolution},
-                                      {{71,  3, 77, NAN, NAN,  OneSolution},  ZeroSolutions}};
-    unsigned int test_amount = sizeof(test)/sizeof(test[0]);
-    for (unsigned int i = 0; i < test_amount; i++) {
+                                      {{ 0,  1,  0, NAN, NAN, ZeroSolutions},         OneSolution},
+                                      {{ 1,  3,  2, NAN, NAN, ZeroSolutions},        TwoSolutions},
+                                      {{ 1,  2,  1, NAN, NAN, ZeroSolutions},         OneSolution},
+                                      {{71,  3, 77, NAN, NAN,   OneSolution},       ZeroSolutions}};
+
+    size_t test_amount = sizeof(test)/sizeof(test[0]);
+    for (size_t i = 0; i < test_amount; i++) {
         HowManySolutions(&test[i].eq, IsLinear(test[i].eq.a), CountDiscriminant(test[i].eq.a, test[i].eq.b, test[i].eq.c));
         if (test[i].eq.sol != test[i].sol_expected) {
             printf("FAILED: test #%d\nexpected -> %d\nanswer -> %d\n\n",

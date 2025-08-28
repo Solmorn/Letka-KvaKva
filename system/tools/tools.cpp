@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+
 #include "system\tools\tools.h"
 
 
@@ -14,24 +15,21 @@ void PrintGitMeow() {
            BLUE "meowmeowmeowmeow" BLACK "WWW" GREEN "LEAVE" BLACK "WWW" GREEN "BUILDING" BLACK "WWW" RED "MEOOOOOOOOOOW" BLACK "WWW" BLUE "meowmeowmeowmeow\n" RESET);
 }
 
-
-
 void ClearBuffer() {
     while(true) {
         int p = 0;
-        p = getchar();
+        p = getc(stdin);
         if (p == '\n' || p == EOF) {
             break;
         }
     }
 }
 
-
-bool CheckBuffer() {
+bool CheckBuffer(FILE* input) {
     bool isvalid = true;
-    int p = getchar();
+    int p = getc(input);
     while (p != EOF && p != '\n') {
-        p = getchar();
+        p = getc(input);
         if (!isspace(p)) {
             isvalid = false;
         }
@@ -60,8 +58,6 @@ void PrintError(Errors err) {
             PrintColor("Too many flags\n", Red);
             break;
         case Ok:
-            PrintColor("Ok\n", Green);
-            break;
         default:
             PrintColor("Ok\n", Green);
     }
@@ -70,3 +66,4 @@ void PrintError(Errors err) {
 void PrintColor(const char* text, Color color) {
     printf("\033[%dm%s\033[0m", color, text);
 }
+

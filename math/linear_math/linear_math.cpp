@@ -2,8 +2,10 @@
 #include "math\general_math\general_math.h"
 #include "system\tools\tools.h"
 
+
 bool IsLinear(const double a) {
     assert(a != NAN);
+
     if (CompareWithZero(a) == Equals) {
         return 1;
     } else {
@@ -22,3 +24,4 @@ void RootsOfLinear(EquationParams* eq_adr) {
         eq_adr->x2 = 0;
     }
 }
+

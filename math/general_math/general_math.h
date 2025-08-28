@@ -34,6 +34,9 @@ struct HowManySolutions_tester {
     Solutions sol_expected;/**< Expected number of solutions */
 };
 
+
+Errors FileProcessing(EquationParams* eq_adr, FILE* input_file, FILE* output_file);
+
 /**
  * @brief Compares a double typed number to 0, considering a small epsilon.
  *
@@ -60,19 +63,7 @@ Comparison CompareWithZero(const double a);
  */
 Errors HowManySolutions(EquationParams* eq_adr, const bool is_linear, const double d);
 
-/**
- * @brief Solves the square equation, sets roots in EquationParams and number of solutions.
- *
- * @param[in] is_linear Flag indicating if equation is linear.
- * @param[in] d Discriminant of the equation.
- * @param[out] eq_adr Pointer to the equation parameters.
- *
- * @return Error status.
- *
- * @note Statuses: UnexpectedError, TypingError, Ok
- * @note Calls: SolutionFind(EquationParams* eq_adr, const bool is_linear, const double d)
- */
-Errors CalculateAnswer(EquationParams* eq_adr, const bool is_linear, const double d);
+
 
 /**
  * @brief Starts the process of solving the square equation.
@@ -89,19 +80,7 @@ Errors CalculateAnswer(EquationParams* eq_adr, const bool is_linear, const doubl
  */
 Errors Solver(EquationParams* eq_adr);
 
-/**
- * @brief Solves the square equation. Sets roots in the structure EquationParams.
- *
- * @param[in] is_linear Flag indicating if equation is linear.
- * @param[in] d Discriminant of the equation.
- * @param[out] eq_adr Pointer to the equation parameters.
- *
- * @return Nothing.
- *
- * @note Calls: RootsOfLinear(EquationParams* eq_adr),
- *       RootsOfSquare(EquationParams* eq_adr, const double d)
- */
-void SolutionFind(EquationParams* eq_adr, const bool is_linear, const double d);
+
 
 /**
  * @brief Tests function CompareWithZero(const double a).

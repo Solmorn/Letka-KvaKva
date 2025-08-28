@@ -5,11 +5,13 @@
  * Details.
  */
 
+
 #ifndef TALKING
 #define TALKING
 
 
 #include <stdio.h>
+
 #include "system\tools\tools.h"
 
 /**
@@ -28,13 +30,9 @@ bool AskUser(void);
  *
  * @return Nothing
  */
-void Greeting(double* a, double* b, double* c);
+Errors Greeting(double* a, double* b, double* c);
 
-
-void FileGreeting(EquationParams* eq_adr, char* input_filename, char* output_filename);
-
-
-void FileProcessing(EquationParams* eq_adr, char* input_filename, char* output_filename);
+Errors FileGreeting(EquationParams* eq_adr, char* input_filename, char* output_filename);
 
 void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file);
 
@@ -46,6 +44,7 @@ void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file);
  * @return Error status.
  */
 Errors ShowAnswer(EquationParams* eq_adr);
+
 
 #endif // TALKING
 

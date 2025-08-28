@@ -5,25 +5,45 @@
 #include "math\general_math\general_math.h"
 
 
-void Greeting(double* a, double* b, double* c) {
+Errors Greeting(double* a, double* b, double* c) {
+    assert(a != nullptr);
+    assert(b != nullptr);
+    assert(c != nullptr);
     PrintColor("PLease, enter coefficients a, b, c of square equation ax^2 + bx + c: \n", Yellow);
     while (true) {
         int check_scanf = 0;
         bool check_buffer = 0;
-        check_scanf = scanf("%lf %lf %lf", a, b, c);
-        check_buffer = CheckBuffer();
-        if (check_scanf == 3 && check_buffer)  {
-            PrintColor("got it!\n", Green);
-            break;
+        char get_q = 0;
+        get_q = getc(stdin);
+        if (get_q == 'q') {
+            ungetc(get_q, stdin);
+            check_buffer = CheckBuffer(stdin);
+            if (check_buffer) {
+                return CriticalError;
+            } else {
+                PrintError(TypingError);
+                PrintColor("try again!\nor enter " YELLOW "q" BLUE " to quit\n", Blue);
+            }
         } else {
-            PrintError(TypingError);
-            PrintColor("try again!\n", Blue);
+            ungetc(get_q, stdin);
+            check_scanf = scanf("%lf %lf %lf", a, b, c);
+            check_buffer = CheckBuffer(stdin);
+            if (check_scanf == 3 && check_buffer)  {
+                PrintColor("got it!\n", Green);
+                break;
+            } else {
+                PrintError(TypingError);
+                PrintColor("try again!\nor enter " YELLOW "q" BLUE " to quit\n", Blue);
+            }
         }
+
     }
+    return Ok;
 }
 
 void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file) {
     assert(eq_adr != nullptr);
+
     switch (eq_adr->sol) {
         case ZeroSolutions:
             fprintf(output_file, "the Equation has no solutions\n");
@@ -42,69 +62,101 @@ void ShowAnswerFile(EquationParams* eq_adr, FILE* output_file) {
     }
 }
 
-void FileProcessing(EquationParams* eq_adr, FILE* input_file, FILE* output_file) {
-    bool check = true;
-    while (check) {
-        switch (fscanf(input_file, "%lf %lf %lf\n", &(eq_adr->a), &(eq_adr->b), &(eq_adr->c))) {
-            case 3:
-                Solver(eq_adr);
-                ShowAnswerFile(eq_adr, output_file);
-                break;
-            case EOF:
-                check = false;
-                break;
-            default:
-                fprintf(output_file, "syka\n");
-        }
+static Errors CheckQuit(char get_q) {
+    ungetc(get_q, stdin);
+    bool check_buffer = CheckBuffer(stdin);
+    if (check_buffer) {
+        return CriticalError;
+    } else {
+        PrintError(TypingError);
+        PrintColor("try again!\nor enter " YELLOW "q" BLUE " to quit\n", Blue);
     }
+    return Ok;
+
 }
 
+static Errors WorkWithOutput(EquationParams* eq_adr, FILE* input_file, char* output_filename) {
+    assert(eq_adr != nullptr);
+    assert(input_file != nullptr);
 
+    Errors err = Ok;
+    char get_q = 0;
+    PrintColor("enter output filename\n", Yellow);
+    while (true) {
+        get_q = getc(stdin);
+        if (get_q == 'q') {
+            err = CheckQuit(get_q);
+            if (err != Ok) {
+                return err;
+            }
+        } else {
+            ungetc(get_q, stdin);
+            scanf("%s", output_filename);
+            if (CheckBuffer(stdin)) {
+                FILE *output_file = fopen(output_filename, "r+");
+                if (output_file == nullptr) {
+                    PrintError(FileNameError);
+                    PrintColor("try again!\nor enter " YELLOW "q" BLUE " to quit\n", Blue);
+                } else {
+                    break;
+                }
+                err = FileProcessing(eq_adr, input_file, output_file);
+                fclose(output_file);
+            } else {
+                PrintError(TypingError);
+            }
+        }
+    }
+    return err;
+}
 
-void FileGreeting(EquationParams* eq_adr, char* input_filename, char* output_filename) {
+Errors FileGreeting(EquationParams* eq_adr, char* input_filename, char* output_filename) {
+    assert(eq_adr != nullptr);
+    assert(input_filename != nullptr);
+    assert(output_filename != nullptr);
+
+    Errors err = Ok;
+    bool check_buffer = 0;
+    char get_q = 0;
     PrintColor("enter input filename\n", Yellow);
     while (true) {
-        scanf("%s", input_filename);
-        if (CheckBuffer()) {
-            FILE *input_file = fopen(input_filename, "r");
-            if (input_file == nullptr) {
-                PrintError(FileNameError);
-                PrintColor("try again!\n", Blue);
-            } else {
-                PrintColor("enter output filename\n", Yellow);
-                while (true) {
-                    scanf("%s", output_filename);
-                    if (CheckBuffer()) {
-                        FILE *output_file = fopen(output_filename, "r+");
-                        if (output_file == nullptr) {
-                            PrintError(FileNameError);
-                            PrintColor("try again!\n", Blue);
-                        } else {
-                            FileProcessing(eq_adr, input_file, output_file);
-                            fclose(output_file);
-                            break;
-                        }
-                        fclose(output_file);
-                    } else {
-                        PrintError(TypingError);
-                    }
-                }
-                break;
+        get_q = getc(stdin);
+        if (get_q == 'q') {
+            err = CheckQuit(get_q);
+            if (err != Ok) {
+                return err;
             }
-            fclose(input_file);
         } else {
-            PrintError(TypingError);
+            ungetc(get_q, stdin);
+            scanf("%s", input_filename);
+            check_buffer = CheckBuffer(stdin);
+            if (check_buffer) {
+                FILE *input_file = fopen(input_filename, "r");
+                if (input_file == nullptr) {
+                    PrintError(FileNameError);
+                    PrintColor("try again!\nor enter " YELLOW "q" BLUE " to quit\n", Blue);
+                } else {
+                    err = WorkWithOutput(eq_adr, input_file, output_filename);
+                    if (err != Ok) {
+                        return err;
+                    }
+                    break;
+                }
+                fclose(input_file);
+            } else {
+                PrintError(TypingError);
+            }
         }
     }
+    return Ok;
 }
-
 
 bool AskUser() {
     char answer[4];
     PrintColor("wanna continue? yes/no\n", Yellow);
     while (true) {
         scanf("%3s", &answer);
-        if (CheckBuffer() && (strcmp(answer, "yes") == 0 || strcmp(answer, "no") == 0)) {
+        if (CheckBuffer(stdin) && (strcmp(answer, "yes") == 0 || strcmp(answer, "no") == 0)) {
             break;
         } else {
             PrintColor("try again!\n", Blue);
@@ -118,6 +170,7 @@ bool AskUser() {
 
 Errors ShowAnswer(EquationParams* eq_adr) {
     assert(eq_adr != nullptr);
+
     Errors err = Ok;
     switch (eq_adr->sol) {
         case ZeroSolutions:
@@ -137,6 +190,4 @@ Errors ShowAnswer(EquationParams* eq_adr) {
     }
     return err;
 }
-
-
 

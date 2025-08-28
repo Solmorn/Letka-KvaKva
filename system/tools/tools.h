@@ -17,24 +17,19 @@
 
 #define MAX_LEN 100
 
+
+#include <stdio.h>
 #include <math.h>
 
 
-
-
-
 enum Color {
-    Reset = 0,
-    Black = 30,
-    Red = 31,
-    Green = 32,
-    Yellow = 33,
-    Blue = 34
-
-
-
+    Reset    = 0,
+    Black    = 30,
+    Red      = 31,
+    Green    = 32,
+    Yellow   = 33,
+    Blue     = 34
 };
-
 
 /**
  * @enum Solutions
@@ -42,9 +37,9 @@ enum Color {
  */
 enum Solutions {
     InfiniteSolutions = -1, ///< Infinite number of solutions
-    ZeroSolutions = 0,      ///< No solutions
-    OneSolution = 1,        ///< One solution
-    TwoSolutions = 2        ///< Two solutions
+    ZeroSolutions     =  0,      ///< No solutions
+    OneSolution       =  1,        ///< One solution
+    TwoSolutions      =  2        ///< Two solutions
 };
 
 /**
@@ -52,6 +47,7 @@ enum Solutions {
  * @brief Error status codes.
  */
 enum Errors {
+    CriticalError,
     TypingError,         ///< Typing error occurred
     UnexpectedError,     ///< Unexpected error occurred
     FileNameError,       ///< File name error occurred
@@ -66,9 +62,9 @@ enum Errors {
  * @brief Comparison results.
  */
 enum Comparison {
-    Less = -1, ///< Less than
-    Equals = 0, ///< Equals
-    More = 1   ///< More than
+    Less   = -1, ///< Less than
+    Equals =  0, ///< Equals
+    More   =  1   ///< More than
 };
 
 /**
@@ -100,19 +96,14 @@ struct EquationParams {
     Solutions sol; ///< Number of solutions
 };
 
-
 void PrintMeow();
 
 void PrintGitMeow();
 
-
-
-
-
 /**
  * @brief Clears input buffer.
  */
-void ClearBuffer(void);
+void ClearBuffer();
 
 /**
  * @brief Prints error messages based on error status.
@@ -134,8 +125,8 @@ void PrintColor(const char* text, Color color);
  *
  * @return true if buffer contains non-blank characters, false otherwise
  */
-bool CheckBuffer(void);
-
+bool CheckBuffer(FILE* input);
 
 
 #endif // TOOLS
+
