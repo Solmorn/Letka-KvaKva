@@ -4,12 +4,12 @@
 #include "math\linear_math\linear_math.h"
 
 void CompareWithZeroTest() {
-    CompareWithZero_tester test[] ={{             1,   More},
-                                    {            -1,   Less},
-                                    {             0, Equals},
-                                    {(1e-9)-(1e-10), Equals},
-                                    {(1e-9)+(1e-10),   More}};
-
+    CompareWithZero_tester test[] ={{.a =              1, .expected =   More},
+                                    {.a =             -1, .expected =   Less},
+                                    {.a =              0, .expected = Equals},
+                                    {.a = (1e-9)-(1e-10), .expected = Equals},
+                                    {.a = (1e-9)+(1e-10), .expected =   More}};
+.a =
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
         CompareWithZero_tester recent = test[i];
@@ -24,12 +24,12 @@ void CompareWithZeroTest() {
 }
 
 void HowManySolutionsTest() {
-    HowManySolutions_tester test[] = {{{ 0,  0,  0, NAN, NAN, ZeroSolutions},   InfiniteSolutions},
-                                      {{ 0,  1,  0, NAN, NAN, ZeroSolutions},         OneSolution},
-                                      {{ 1,  3,  2, NAN, NAN, ZeroSolutions},        TwoSolutions},
-                                      {{ 1,  2,  1, NAN, NAN, ZeroSolutions},         OneSolution},
-                                      {{71,  3, 77, NAN, NAN,   OneSolution},       ZeroSolutions}};
-
+    HowManySolutions_tester test[] = {{.eq = {.a =  0, .b =  0, .c =  0, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =   InfiniteSolutions},
+                                      {.eq = {.a =  0, .b =  1, .c =  0, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =         OneSolution},
+                                      {.eq = {.a =  1, .b =  3, .c =  2, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =        TwoSolutions},
+                                      {.eq = {.a =  1, .b =  2, .c =  1, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .expected =         OneSolution},
+                                      {.eq = {.a = 71, .b =  3, .c = 77, .x1 = NAN, .x2 = NAN, .sol =   OneSolution}, .expected =       ZeroSolutions}};
+.a = .b =
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
         HowManySolutions(&test[i].eq, IsLinear(test[i].eq.a), CountDiscriminant(test[i].eq.a, test[i].eq.b, test[i].eq.c));

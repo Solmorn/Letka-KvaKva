@@ -4,10 +4,10 @@
 
 
 void DiscriminantTest() {
-    Discriminant_tester test[] = {{1, 2, 1,  0},
-                                  {1, 4, 4,  0},
-                                  {2, 1, 1, -7},
-                                  {1, 5, 1, 21}};
+    Discriminant_tester test[] = {{.a = 1, .b = 2, .c = 1, .expected =  0},
+                                  {.a = 1, .b = 4, .c = 4, .expected =  0},
+                                  {.a = 2, .b = 1, .c = 1, .expected = -7},
+                                  {.a = 1, .b = 5, .c = 1, .expected = 21}};
 
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
@@ -23,8 +23,8 @@ void DiscriminantTest() {
 }
 
 void RootsOfSquareTest() {
-    RootsOfSquare_tester test[] = {{{ 1,  -5,  6, NAN, NAN, ZeroSolutions},  3,   2},
-                                   {{ 1,   2,  1, NAN, NAN, ZeroSolutions}, -1,  -1}};
+    RootsOfSquare_tester test[] = {{.eq = {.a = 1, .b = -5, .c = 6, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .x1_expected =  3, .x2_expected =  2},
+                                   {.eq = {.a = 1, .b =  2, .c = 1, .x1 = NAN, .x2 = NAN, .sol = ZeroSolutions}, .x1_expected = -1, .x2_expected = -1}};
 
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {

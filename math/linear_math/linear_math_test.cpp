@@ -4,10 +4,10 @@
 
 
 void IsLinearTest() {
-    IsLinear_tester test[] ={{ 1, 0},
-                             {10, 0},
-                             {-1, 0},
-                             { 0, 1}};
+    IsLinear_tester test[] ={{.a =  1, .expected = 0},
+                             {.a = 10, .expected = 0},
+                             {.a = -1, .expected = 0},
+                             {.a =  0, .expected = 1}};
 
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
@@ -22,9 +22,9 @@ void IsLinearTest() {
 }
 
 void RootsOfLinearTest() {
-    RootsOfLinear_tester test[] ={{{0,  2,  3, NAN, NAN, ZeroSolutions}, -1.5, -1.5},
-                                  {{0,  2,  0, NAN, NAN, ZeroSolutions},    0,    0},
-                                  {{0,  2, -4, NAN, NAN, ZeroSolutions},    2,    2}};
+    RootsOfLinear_tester test[] ={{.eq = {.a = 0, .b =  2, .c =   3, .x1 =  NAN, .x2 =  NAN, .sol =  ZeroSolutions}, x1_expected =  -1.5, x2_expected = -1.5},
+                                  {.eq = {.a = 0, .b =  2, .c =   0, .x1 =  NAN, .x2 =  NAN, .sol =  ZeroSolutions}, x1_expected =     0, x2_expected =    0},
+                                  {.eq = {.a = 0, .b =  2, .c =  -4, .x1 =  NAN, .x2 =  NAN, .sol =  ZeroSolutions}, x1_expected =     2, x2_expected =    2}};
 
     size_t test_amount = sizeof(test)/sizeof(test[0]);
     for (size_t i = 0; i < test_amount; i++) {
